@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Briefcase, TrendingUp, CheckCircle, Globe, BookOpen, HeartHandshake, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa6";
 
 export default function Home() {
   const { toast } = useToast();
@@ -372,17 +372,20 @@ export default function Home() {
                 Bridging Africa and Canada through premium education, transformative career training, and strategic business consulting. Your future, our expertise.
               </p>
               <div className="flex gap-3">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-linkedin" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/company/prait-consulting-inc/" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-linkedin" aria-label="LinkedIn">
                   <FaLinkedinIn className="h-5 w-5" />
                 </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-twitter" aria-label="X (Twitter)">
-                  <FaXTwitter className="h-4 w-4" />
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-facebook" aria-label="Facebook">
+                <a href="https://www.facebook.com/share/1NsoT5BUJL/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-facebook" aria-label="Facebook">
                   <FaFacebookF className="h-5 w-5" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-instagram" aria-label="Instagram">
+                <a href="https://www.instagram.com/prait_consulting?igsh=MWl1c3lyZ293Zm43OQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-instagram" aria-label="Instagram">
                   <FaInstagram className="h-5 w-5" />
+                </a>
+                <a href="https://www.tiktok.com/@prait.consulting?_r=1&_t=ZS-95xYccaoDMS" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-tiktok" aria-label="TikTok">
+                  <FaTiktok className="h-5 w-5" />
+                </a>
+                <a href="https://youtube.com/@praitconsulting?si=EJQYQxDudKl9PJ3k" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-youtube" aria-label="YouTube">
+                  <FaYoutube className="h-5 w-5" />
                 </a>
               </div>
             </div>
