@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Briefcase, TrendingUp, CheckCircle, Globe, BookOpen, HeartHandshake, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { FaLinkedinIn, FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 export default function Home() {
   const { toast } = useToast();
@@ -369,18 +371,18 @@ export default function Home() {
               <p className="text-background/70 max-w-md mb-6 leading-relaxed">
                 Bridging Africa and Canada through premium education, transformative career training, and strategic business consulting. Your future, our expertise.
               </p>
-              <div className="flex gap-4">
-                <a href="#" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-linkedin">
-                  <span className="sr-only">LinkedIn</span>
-                  in
+              <div className="flex gap-3">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-linkedin" aria-label="LinkedIn">
+                  <FaLinkedinIn className="h-5 w-5" />
                 </a>
-                <a href="#" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-twitter">
-                  <span className="sr-only">Twitter</span>
-                  tw
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-twitter" aria-label="X (Twitter)">
+                  <FaXTwitter className="h-4 w-4" />
                 </a>
-                <a href="#" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-facebook">
-                  <span className="sr-only">Facebook</span>
-                  fb
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-facebook" aria-label="Facebook">
+                  <FaFacebookF className="h-5 w-5" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="h-10 w-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-accent transition-colors" data-testid="social-instagram" aria-label="Instagram">
+                  <FaInstagram className="h-5 w-5" />
                 </a>
               </div>
             </div>
@@ -411,8 +413,8 @@ export default function Home() {
           <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
             <p>&copy; {new Date().getFullYear()} PRAIT Consulting Inc. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+              <Link href="/privacy-policy" className="hover:text-white transition-colors" data-testid="footer-privacy-link">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="hover:text-white transition-colors" data-testid="footer-terms-link">Terms of Service</Link>
             </div>
           </div>
         </div>
