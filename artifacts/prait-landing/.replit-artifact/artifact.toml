@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "PRAIT Consulting"
+version = "1.0.0"
+id = "artifacts/prait-landing"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23855
+
+[services.development]
+run = "pnpm --filter @workspace/prait-landing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/prait-landing", "run", "build" ]
+publicDir = "artifacts/prait-landing/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23855"
+BASE_PATH = "/"
