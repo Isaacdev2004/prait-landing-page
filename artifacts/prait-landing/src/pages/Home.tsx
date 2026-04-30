@@ -12,13 +12,36 @@ import { FaLinkedinIn, FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "rea
 
 export default function Home() {
   const { toast } = useToast();
+  const [formData, setFormData] = React.useState({ name: "", email: "", phone: "", interest: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Consultation Requested",
-      description: "We will be in touch with you shortly to schedule your free consultation.",
-    });
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Something went wrong");
+      }
+      toast({
+        title: "Request Received!",
+        description: "Thank you — we will be in touch shortly to schedule your free consultation.",
+      });
+      setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
+    } catch (err) {
+      toast({
+        title: "Submission Failed",
+        description: err instanceof Error ? err.message : "Please try again or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollTo = (id: string) => {
@@ -312,21 +335,21 @@ export default function Home() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" required placeholder="John Doe" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-name" />
+                      <Input id="name" required placeholder="John Doe" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-name" value={formData.name} onChange={e => setFormData(f => ({ ...f, name: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address</Label>
-                      <Input id="email" type="email" required placeholder="john@example.com" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-email" />
+                      <Input id="email" type="email" required placeholder="john@example.com" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-email" value={formData.email} onChange={e => setFormData(f => ({ ...f, email: e.target.value }))} />
                     </div>
                   </div>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone Number</Label>
-                      <Input id="phone" type="tel" placeholder="+1 (555) 000-0000" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-phone" />
+                      <Input id="phone" type="tel" placeholder="+1 (555) 000-0000" className="rounded-lg bg-muted/50 border-transparent focus-visible:border-primary" data-testid="form-input-phone" value={formData.phone} onChange={e => setFormData(f => ({ ...f, phone: e.target.value }))} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="interest">Area of Interest</Label>
-                      <Select required>
+                      <Select required value={formData.interest} onValueChange={val => setFormData(f => ({ ...f, interest: val }))}>
                         <SelectTrigger id="interest" className="rounded-lg bg-muted/50 border-transparent" data-testid="form-select-interest">
                           <SelectValue placeholder="Select an option" />
                         </SelectTrigger>
@@ -345,10 +368,12 @@ export default function Home() {
                       className="flex w-full rounded-lg border border-transparent bg-muted/50 px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px] resize-none" 
                       placeholder="Tell us a bit about your current situation..."
                       data-testid="form-input-message"
+                      value={formData.message}
+                      onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
                     ></textarea>
                   </div>
-                  <Button type="submit" size="lg" className="w-full bg-accent hover:bg-accent/90 text-white rounded-full text-lg h-12" data-testid="form-submit-btn">
-                    Book Free Consultation
+                  <Button type="submit" size="lg" disabled={isSubmitting} className="w-full bg-accent hover:bg-accent/90 text-white rounded-full text-lg h-12" data-testid="form-submit-btn">
+                    {isSubmitting ? "Sending..." : "Book Free Consultation"}
                   </Button>
                   <p className="text-xs text-center text-muted-foreground mt-4">
                     Your information is secure. We never share your data with third parties.
