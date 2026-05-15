@@ -1,0 +1,9 @@
+# Render static site — do not use `corepack enable` (read-only filesystem on build).
+staticSites:
+  - name: prait-landing-page
+    buildCommand: PORT=4173 BASE_PATH=/ pnpm --filter @workspace/prait-landing run build
+    staticPublishPath: artifacts/prait-landing/dist/public
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
