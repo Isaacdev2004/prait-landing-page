@@ -9,6 +9,9 @@ import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Briefcase, TrendingUp, CheckCircle, Globe, BookOpen, MapPin } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { FaLinkedinIn, FaFacebookF, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa6";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SectionCta } from "@/components/SectionCta";
+import { AUDIENCE_TAGS, PATHWAYS, type PathwayId } from "@/lib/site-content";
 
 const viewport = { once: true, amount: 0.22, margin: "-60px 0px" as const };
 
@@ -93,51 +96,62 @@ export default function Home() {
     }
   };
 
+  React.useEffect(() => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash) {
+      requestAnimationFrame(() => scrollTo(hash));
+    }
+    const interest = new URLSearchParams(window.location.search).get("interest");
+    if (interest) {
+      setFormData((f) => ({ ...f, interest }));
+    }
+  }, []);
+
+  const pathwayOrder: PathwayId[] = ["canada", "training", "business"];
+  const pathwayButtonStyles: Record<PathwayId, string> = {
+    canada: "border-primary/20 hover:bg-primary/5 text-primary",
+    training: "border-secondary/20 hover:bg-secondary/5 text-secondary",
+    business: "border-accent/20 hover:bg-accent/5 text-accent",
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Sticky Navbar */}
-      <motion.header
-        initial={reduceMotion ? false : { opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduceMotion ? 0.15 : 0.45, ease: easeOut }}
-        className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      >
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollTo("hero")} data-testid="nav-logo">
-            <img src="/prait-logo.jpeg" alt="PRAIT Consulting Logo" className="h-12 w-auto object-contain rounded-md transition-transform duration-300 hover:scale-[1.02]" />
-          </div>
-          <nav className="hidden md:flex gap-8 items-center">
-            <button onClick={() => scrollTo("solutions")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300" data-testid="nav-link-solutions">Solutions</button>
-            <button onClick={() => scrollTo("process")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300" data-testid="nav-link-process">How It Works</button>
-            <button onClick={() => scrollTo("programs")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300" data-testid="nav-link-programs">Programs</button>
-            <button onClick={() => scrollTo("testimonials")} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300" data-testid="nav-link-testimonials">Testimonials</button>
-          </nav>
-          <Button onClick={() => scrollTo("contact")} className="bg-accent hover:bg-accent/90 text-white rounded-full px-6 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]" data-testid="nav-cta">
-            Book Consultation
-          </Button>
-        </div>
-      </motion.header>
+      <SiteHeader onNavigateSection={scrollTo} />
 
       {/* Hero Section */}
       <section id="hero" className="relative pt-24 pb-32 lg:pt-36 lg:pb-40 overflow-hidden">
         <div className="absolute inset-0 -z-10 hero-gradient-breathe bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
         <div className="container mx-auto px-4 text-center">
           <motion.div initial="hidden" animate="show" variants={staggerContainer} className="max-w-4xl mx-auto">
+            <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-wider text-accent mb-4">
+              Canada ↔ Africa · Education & Career Development
+            </motion.p>
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6 leading-tight">
               Unlock Your Future.<br/> <span className="text-primary">Cross Borders.</span> <span className="text-secondary">Climb Ladders.</span>
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Bridging Africa and Canada with premier education, career development, and business consulting for a transformative journey.
+            <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+              A conversion-focused pathway for study in Canada, job-ready training, and business growth — choose your route in seconds.
+            </motion.p>
+            <motion.p variants={fadeInUp} className="text-base text-muted-foreground/90 mb-10 max-w-xl mx-auto">
+              Domestic recruitment · International students · Bootcamps · Business consulting
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white rounded-full text-lg h-14 px-8 shadow-lg shadow-accent/20 transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]" onClick={() => scrollTo("contact")} data-testid="hero-primary-cta">
                 Book Free Consultation
               </Button>
             </motion.div>
-            <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-3">
-              <Button variant="outline" className="rounded-full border-primary/20 hover:bg-primary/5 text-primary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" onClick={() => scrollTo("programs")} data-testid="hero-study">Study in Canada</Button>
-              <Button variant="outline" className="rounded-full border-secondary/20 hover:bg-secondary/5 text-secondary transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" onClick={() => scrollTo("programs")} data-testid="hero-job">Get Job-Ready</Button>
-              <Button variant="outline" className="rounded-full border-accent/20 hover:bg-accent/5 text-accent transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" onClick={() => scrollTo("programs")} data-testid="hero-business">Grow Your Business</Button>
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
+              {pathwayOrder.map((id, i) => (
+                <Link key={id} href={PATHWAYS[id].slug}>
+                  <Button
+                    variant="outline"
+                    className={`rounded-full w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${pathwayButtonStyles[id]}`}
+                    data-testid={i === 0 ? "hero-study" : i === 1 ? "hero-job" : "hero-business"}
+                  >
+                    {PATHWAYS[id].heroLabel}
+                  </Button>
+                </Link>
+              ))}
             </motion.div>
           </motion.div>
         </div>
@@ -168,6 +182,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Audience segmentation */}
+      <section className="py-8 bg-background border-b">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-sm text-muted-foreground mb-4 font-medium">
+            Tailored support for every stage of your journey
+          </p>
+          <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+            {AUDIENCE_TAGS.map((tag) => (
+              <span
+                key={tag}
+                className="px-4 py-2 rounded-full text-sm font-medium bg-muted/60 text-foreground/80 border border-border/50"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Problem Awareness */}
       <section className="py-24 bg-primary text-primary-foreground overflow-hidden">
         <div className="container mx-auto px-4 max-w-4xl text-center">
@@ -184,6 +217,13 @@ export default function Home() {
         </div>
       </section>
 
+      <SectionCta
+        title="Not sure which pathway fits you?"
+        description="Book a free consultation — we'll map the right route for study, training, or business growth."
+        onAction={() => scrollTo("contact")}
+        testId="cta-after-problem"
+      />
+
       {/* Solution Overview */}
       <section id="solutions" className="py-24">
         <div className="container mx-auto px-4">
@@ -195,10 +235,10 @@ export default function Home() {
             className="text-center max-w-3xl mx-auto mb-16"
           >
             <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Three Pillars of Transformation
+              The PRAIT System — Three Core Pathways
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
-              Comprehensive solutions tailored to your unique journey and goals.
+              Segmented funnels so you see the right programs, messaging, and next steps — not a one-size-fits-all page.
             </motion.p>
           </motion.div>
           <motion.div
@@ -221,8 +261,8 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold mb-3">Canada Pathway</h3>
                   <p className="text-muted-foreground mb-6">Expert guidance for domestic and international student recruitment, specializing in prestigious institutions like Conestoga College.</p>
-                  <Button variant="ghost" className="mt-auto rounded-full w-full border-primary/20 hover:bg-primary/5 text-primary group" onClick={() => scrollTo("programs")} data-testid="solution-canada-btn">
-                    Explore Pathways <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <Button variant="ghost" className="mt-auto rounded-full w-full border-primary/20 hover:bg-primary/5 text-primary group" asChild data-testid="solution-canada-btn">
+                    <Link href="/canada-pathway">Explore Pathways <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span></Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -240,8 +280,8 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold mb-3">Career Training</h3>
                   <p className="text-muted-foreground mb-6">Future-proof your skills with intensive bootcamps in AI, Cybersecurity, and Digital Skills designed for the modern workforce.</p>
-                  <Button variant="ghost" className="mt-auto rounded-full w-full border-secondary/20 hover:bg-secondary/5 text-secondary group" onClick={() => scrollTo("programs")} data-testid="solution-training-btn">
-                    View Bootcamps <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <Button variant="ghost" className="mt-auto rounded-full w-full border-secondary/20 hover:bg-secondary/5 text-secondary group" asChild data-testid="solution-training-btn">
+                    <Link href="/career-training">View Bootcamps <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span></Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -259,8 +299,8 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold mb-3">Business Growth</h3>
                   <p className="text-muted-foreground mb-6">Strategic consulting and practical solutions to help entrepreneurs scale their operations and enter new global markets.</p>
-                  <Button variant="ghost" className="mt-auto rounded-full w-full border-accent/20 hover:bg-accent/5 text-accent group" onClick={() => scrollTo("programs")} data-testid="solution-business-btn">
-                    Learn More <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <Button variant="ghost" className="mt-auto rounded-full w-full border-accent/20 hover:bg-accent/5 text-accent group" asChild data-testid="solution-business-btn">
+                    <Link href="/business-growth">Learn More <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span></Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -268,6 +308,13 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <SectionCta
+        title="Ready to explore your pathway?"
+        description="Speak with an advisor about Canada study, career training, or business growth — free consultation."
+        onAction={() => scrollTo("contact")}
+        testId="cta-after-solutions"
+      />
 
       {/* How It Works */}
       <section id="process" className="py-24 bg-muted/30">
@@ -387,6 +434,13 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <SectionCta
+        title="Find the program that fits your goals"
+        description="Tell us your interest and we'll recommend the right PRAIT pathway and next steps."
+        onAction={() => scrollTo("contact")}
+        testId="cta-after-programs"
+      />
 
       {/* Testimonials */}
       <section id="testimonials" className="py-24 bg-primary text-primary-foreground">
@@ -509,9 +563,9 @@ export default function Home() {
                           <SelectValue placeholder="Select an option" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="study">Study in Canada</SelectItem>
-                          <SelectItem value="train">Career Training / Bootcamp</SelectItem>
-                          <SelectItem value="business">Business Consulting</SelectItem>
+                          <SelectItem value="study">Study or Work in Canada</SelectItem>
+                          <SelectItem value="train">Job-Ready Skills & Training</SelectItem>
+                          <SelectItem value="business">Business Growth & AI</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -543,7 +597,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-foreground text-background py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-5 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-2 mb-6 bg-white p-2 rounded-md inline-block w-fit">
                 <img src="/prait-logo.jpeg" alt="PRAIT Consulting Logo" className="h-8 w-auto object-contain" />
@@ -576,6 +630,14 @@ export default function Home() {
                 <li><button onClick={() => scrollTo("solutions")} className="text-background/70 hover:text-white transition-colors">Solutions</button></li>
                 <li><button onClick={() => scrollTo("programs")} className="text-background/70 hover:text-white transition-colors">Programs</button></li>
                 <li><button onClick={() => scrollTo("testimonials")} className="text-background/70 hover:text-white transition-colors">Testimonials</button></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg mb-6">Pathways</h4>
+              <ul className="space-y-3">
+                <li><Link href="/canada-pathway" className="text-background/70 hover:text-white transition-colors">Canada Pathway</Link></li>
+                <li><Link href="/career-training" className="text-background/70 hover:text-white transition-colors">Career Training</Link></li>
+                <li><Link href="/business-growth" className="text-background/70 hover:text-white transition-colors">Business Growth</Link></li>
               </ul>
             </div>
             <div>

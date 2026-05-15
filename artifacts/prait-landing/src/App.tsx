@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
+import CanadaPathway from "@/pages/CanadaPathway";
+import CareerTraining from "@/pages/CareerTraining";
+import BusinessGrowth from "@/pages/BusinessGrowth";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 
@@ -14,6 +17,9 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/canada-pathway" component={CanadaPathway} />
+      <Route path="/career-training" component={CareerTraining} />
+      <Route path="/business-growth" component={BusinessGrowth} />
       <Route path="/privacy-policy" component={PrivacyPolicy} />
       <Route path="/terms-of-service" component={TermsOfService} />
       <Route component={NotFound} />
