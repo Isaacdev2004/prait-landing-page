@@ -1,6 +1,9 @@
-# Render static site — do not use `corepack enable` (read-only filesystem on build).
-staticSites:
-  - name: prait-landing-page
+# https://render.com/docs/blueprint-spec
+# Do not use `corepack enable` on Render (read-only /usr/bin).
+services:
+  - type: web
+    name: prait-landing-page
+    runtime: static
     buildCommand: PORT=4173 BASE_PATH=/ pnpm --filter @workspace/prait-landing run build
     staticPublishPath: artifacts/prait-landing/dist/public
     routes:
