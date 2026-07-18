@@ -10,6 +10,7 @@ import CareerTraining from "@/pages/CareerTraining";
 import BusinessGrowth from "@/pages/BusinessGrowth";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
+import { useHubSpotTracking } from "@/hooks/use-hubspot";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,8 @@ function Router() {
 }
 
 function App() {
+  useHubSpotTracking();
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

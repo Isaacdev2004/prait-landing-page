@@ -6,12 +6,34 @@ const contactRouter = Router();
 const RECIPIENT_EMAIL = "info@praitconsulting.ca";
 
 contactRouter.post("/contact", async (req, res) => {
-  const { name, email, phone, interest, message } = req.body as {
+  const {
+    name,
+    email,
+    phone,
+    interest,
+    profileType,
+    message,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
+    landing_page,
+    referrer,
+  } = req.body as {
     name?: string;
     email?: string;
     phone?: string;
     interest?: string;
+    profileType?: string;
     message?: string;
+    utm_source?: string;
+    utm_medium?: string;
+    utm_campaign?: string;
+    utm_term?: string;
+    utm_content?: string;
+    landing_page?: string;
+    referrer?: string;
   };
 
   if (!name || !email || !interest) {
@@ -20,12 +42,43 @@ contactRouter.post("/contact", async (req, res) => {
   }
 
   const interestLabels: Record<string, string> = {
-    study: "Study in Canada",
-    train: "Career Training / Bootcamp",
-    business: "Business Consulting",
+    study: "Study or Work in Canada",
+    train: "Job-Ready Skills & Training",
+    business: "Business Growth & AI",
+    domestic: "Domestic Career College (Canada)",
+    international: "International Student Pathway",
+  };
+
+  const profileLabels: Record<string, string> = {
+    "career-switcher": "Career switcher in Canada",
+    immigrant: "Immigrant seeking a career path",
+    "intl-student": "International student (Africa focus)",
+    upskilling: "Professional seeking upskilling",
+    "business-owner": "Small business owner / entrepreneur",
+    other: "Other",
   };
 
   const interestLabel = interestLabels[interest] ?? interest;
+  const profileLabel = profileType ? (profileLabels[profileType] ?? profileType) : "Not provided";
+
+  const attributionRows = [
+    ["UTM Source", utm_source],
+    ["UTM Medium", utm_medium],
+    ["UTM Campaign", utm_campaign],
+    ["UTM Term", utm_term],
+    ["UTM Content", utm_content],
+    ["Landing Page", landing_page],
+    ["Referrer", referrer],
+  ]
+    .filter(([, value]) => Boolean(value))
+    .map(
+      ([label, value]) => `
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; color: #374151;">${label}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #111827;">${value}</td>
+              </tr>`,
+    )
+    .join("");
 
   try {
     const { client, fromEmail } = await getUncachableResendClient();
@@ -56,6 +109,10 @@ contactRouter.post("/contact", async (req, res) => {
                 <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #111827;">${phone || "Not provided"}</td>
               </tr>
               <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; color: #374151;">Profile Type</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #111827;">${profileLabel}</td>
+              </tr>
+              <tr>
                 <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; color: #374151;">Area of Interest</td>
                 <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
                   <span style="background: #e0f2fe; color: #1a3a5c; padding: 3px 10px; border-radius: 20px; font-size: 13px; font-weight: bold;">${interestLabel}</span>
@@ -64,17 +121,18 @@ contactRouter.post("/contact", async (req, res) => {
               ${
                 message
                   ? `<tr>
-                <td style="padding: 10px 0; font-weight: bold; color: #374151; vertical-align: top;">Message</td>
-                <td style="padding: 10px 0; color: #111827; white-space: pre-wrap;">${message}</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; font-weight: bold; color: #374151; vertical-align: top;">Message</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb; color: #111827; white-space: pre-wrap;">${message}</td>
               </tr>`
                   : ""
               }
+              ${attributionRows}
             </table>
             <div style="margin-top: 28px; padding: 16px; background: #fff3cd; border-left: 4px solid #e07b00; border-radius: 4px;">
               <p style="margin: 0; font-size: 13px; color: #7a4f01;"><strong>Action needed:</strong> Reply directly to this email or reach the lead at <a href="mailto:${email}">${email}</a></p>
             </div>
           </div>
-          <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px;">PRAIT Consulting Inc. &mdash; info@praitconsulting.ca</p>
+          <p style="text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px;">PRAIT Consulting Inc. &mdash; admin@praitconsulting.ca</p>
         </div>
       `,
     });

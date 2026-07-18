@@ -48,6 +48,9 @@ export function SiteHeader({ onNavigateSection, className = "" }: SiteHeaderProp
           <button type="button" onClick={() => goSection("process")} className={navButtonClass} data-testid="nav-link-process">
             How It Works
           </button>
+          <button type="button" onClick={() => goSection("advisor")} className={navButtonClass} data-testid="nav-link-advisor">
+            Find My Pathway
+          </button>
           <button type="button" onClick={() => goSection("programs")} className={navButtonClass} data-testid="nav-link-programs">
             Programs
           </button>
@@ -85,6 +88,9 @@ export function SiteHeader({ onNavigateSection, className = "" }: SiteHeaderProp
                 <hr className="border-border/60" />
                 <button type="button" className="text-left font-medium hover:text-primary" onClick={() => goSection("process")}>
                   How It Works
+                </button>
+                <button type="button" className="text-left font-medium hover:text-primary" onClick={() => goSection("advisor")}>
+                  Find My Pathway
                 </button>
                 <button type="button" className="text-left font-medium hover:text-primary" onClick={() => goSection("programs")}>
                   Programs
